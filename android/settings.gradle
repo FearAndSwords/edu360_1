@@ -1,0 +1,5 @@
+rootProject.name = 'edu360_1'
+include ':react-native-vr'
+project(':react-native-vr').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-vr/android')
+
+include ':app'
