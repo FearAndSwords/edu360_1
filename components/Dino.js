@@ -24,7 +24,7 @@ class Dino extends Component
                 <Vr
                     src=
                     {{
-                        uri: 'https://streams.kolor.com/streams/0e733b85-ce09-47a2-8d8b-992e3eb4cebf/source.03-1080p_HD.mp4',
+                        uri: 'dinoVid',
                         type: Vr.constants.TYPE.MONO,
                         format: Vr.constants.FORMAT.DEFAULT
                     }}
@@ -52,7 +52,8 @@ class Dino extends Component
                         <Text style={styles.textStyle}> Take Quiz </Text>
                     </TouchableHighlight>
 
-                    <TouchableHighlight style={styles.button} onPress={() => {this.props.navigator.pop(); this.setState({ paused: !this.state.paused })}}>
+                    <TouchableHighlight style={styles.button} onPress={() => {this.props.navigator.pop()}}>
+                    {/*<TouchableHighlight style={styles.button} onPress={() => {this.props.navigator.pop(); this.setState({ paused: !this.state.paused })}}>*/}
                         <Text style={styles.textStyle}> Home </Text>
                     </TouchableHighlight>
                 </View>

@@ -4,6 +4,8 @@ import Home from './components/Home';
 import Dino from './components/Dino';
 import Space from './components/Space'
 import Options from './components/Options';
+import Splash from './components/Splash';
+import Login from './components/Login';
 
 export default class edu360_1 extends Component
 {
@@ -15,9 +17,17 @@ export default class edu360_1 extends Component
 
   renderScene(route, navigator)
   {
+    if(route.name === 'splashPage')
+    {
+        return <Splash navigator={navigator}/>
+    }
+    if(route.name === 'loginPage')
+    {
+        return <Login navigator={navigator}/>
+    }
     if(route.name === 'homePage')
     {
-      return <Home navigator={navigator}/>
+        return <Home navigator={navigator}/>
     }
     else if(route.name === 'dinoPage')
     {
@@ -36,7 +46,7 @@ export default class edu360_1 extends Component
   render()
   {
     return (
-      <Navigator initialRoute={{name: 'homePage'}}
+      <Navigator initialRoute={{name: 'splashPage'}}
                  renderScene={this.renderScene}
       />
     );
