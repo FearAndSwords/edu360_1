@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, AppRegistry, KeyboardAvoidingView, TextInput } from 'react-native';
-import LoginForm from './LoginForm';
+//import LoginForm from './LoginForm';
 import firebase from 'firebase';
+import Spinner from './Spinner';
 
 class Login extends Component
 {
     constructor()
     {
         super();
-        this.state = { email: '', password: '', error: '' };
+        this.state = { email: '', password: '', error: '', loading: false, loggedIn: false };
         this.navigate = this.navigate.bind(this)
-    }
-
-    
+    }    
 
     componentWillMount() {
         firebase.initializeApp({
@@ -22,26 +21,74 @@ class Login extends Component
             storageBucket: 'authentication-9e6e9.appspot.com',
             messagingSenderId: '166330697411'
         });
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if(user) {
+                this.setState({ loggedIn: true })
+            } else {
+                this.setState({ loggedIn: false })
+            }            
+        });
+    }    
+
+    moveToNextScreen() {
+        this.navigate('homePage');
     }
 
-    
-
     onButtonPress() {
-        console.log("working");
+        //console.log("working");
         const { email, password } = this.state;
-        //this.setState({ error: 'Authentication Failed'});
+
+        this.setState({ error: '', loading: true});
         
         firebase.auth().signInWithEmailAndPassword(email, password)
+            .then(this.onLoginSuccess.bind(this))
             .catch(() => {
                 firebase.auth().createUserWithEmailAndPassword(email, password)
-                    .catch(() => {
-                        this.setState({ error: 'Authentication Failed'});
-                    })
+                    .then(this.onLoginSuccess.bind(this))
+                    .catch((this.onLoginFail.bind(this)))
             })
     }
 
+    onLoginFail() {
+        this.setState({ 
+            loading: false,
+            error: 'Authentication Failed'
+        })
+    }
+
+    onLoginSuccess() {
+        console.log("move screenb  :( ");
+        this.moveToNextScreen();
+        // this.setState({ 
+        //     email: '',
+        //     password: '',
+        //     loading: false,
+        //     error: ''
+        // });
+        //console.log("move screenb  :( ");
+        
+    }
+
+    renderButton() {
+        if(this.state.loading) {
+            return <Spinner  />;
+        }
+
+        return (
+            <Text 
+            style={styles.buttonText} 
+            onPress={() => this.onButtonPress()}
+            //onPress={() => this.navigate('homePage')}
+            >
+            LOGIN
+            </Text>
+            );
+        }
+
     navigate(name)
     {
+        //console.print("nav worked");
         this.props.navigator.push(
         {
             name
@@ -96,13 +143,7 @@ class Login extends Component
                     </Text>
 
                     <TouchableOpacity style={styles.buttonContainer}>
-                        <Text 
-                        style={styles.buttonText} 
-                        onPress={() => this.onButtonPress()}
-                        //onPress={() => this.navigate('homePage')}
-                        >
-                        LOGIN
-                        </Text>
+                        {this.renderButton()}
                     </TouchableOpacity>
                 </View>
 
@@ -163,7 +204,8 @@ const styles = StyleSheet.create(
     errorTextStyle: {
         fontSize: 20,
         alignSelf: 'center',
-        color: 'red'
+        color: 'red',
+        padding: 20
     }
 });
 
