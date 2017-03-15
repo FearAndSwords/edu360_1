@@ -15,9 +15,9 @@ class Splash extends Component
     navigate(name)
     {
         this.props.navigator.push(
-            {
-                name
-            });
+        {
+            name
+        });
     }
 
     render()

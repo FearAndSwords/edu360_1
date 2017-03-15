@@ -24,8 +24,8 @@ class Space extends Component
                 <Vr
                     src=
                     {{
-                        uri: 'https://streams.kolor.com/streams/0e733b85-ce09-47a2-8d8b-992e3eb4cebf/source.03-1080p_HD.mp4',
-                        type: Vr.constants.TYPE.MONO,
+                        uri: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4',
+                        type: Vr.constants.TYPE.STEREO_OVER_UNDER,
                         format: Vr.constants.FORMAT.DEFAULT
                     }}
                     paused={this.state.paused}
@@ -36,6 +36,7 @@ class Space extends Component
                         width: 350
                     }}
                 />
+                
 
                 <View style={styles.optionsStyle}>
                     <TouchableHighlight style={styles.button} onPress={() => this.setState({ paused: !this.state.paused })}>

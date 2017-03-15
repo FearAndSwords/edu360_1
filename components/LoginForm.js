@@ -1,14 +1,22 @@
+//no need for this component anymore!!
+
 import React, { Component } from 'react';
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, KeyboardAvoidingView} from 'react-native';
 
 
 class LoginForm extends Component
 {
+
+    
+
     render()
     {
         return (
             <KeyboardAvoidingView behaviour="padding" style={styles.container}>
                 <TextInput 
+                    onChangeText={email => this.setState({ email })}
+                    value={ this.state.email }
+                    label='Email'
                     placeholder="username or email"
                     placeholderTextColor="rgba(255,255,255,0.5)"
                     returnKeyType="next"
@@ -22,6 +30,9 @@ class LoginForm extends Component
                 <TextInput 
                     //ref='2'
                     placeholder="password"
+                    value={ this.state.password }
+                    onChangeText={ password => this.setState({ password})}
+                    label='password'
                     placeholderTextColor="rgba(255,255,255,0.5)"
                     returnKeyType="go"
                     secureTextEntry

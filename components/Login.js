@@ -1,21 +1,51 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Image, Text, TouchableOpacity, AppRegistry } from 'react-native';
+import { StyleSheet, View, Image, Text, TouchableOpacity, AppRegistry, KeyboardAvoidingView, TextInput } from 'react-native';
 import LoginForm from './LoginForm';
+import firebase from 'firebase';
 
 class Login extends Component
 {
     constructor()
     {
         super();
+        this.state = { email: '', password: '', error: '' };
         this.navigate = this.navigate.bind(this)
+    }
+
+    
+
+    componentWillMount() {
+        firebase.initializeApp({
+            apiKey: 'AIzaSyAZHP7PREhyxPkHqGUaM3cVp97qNZWXL9c',
+            authDomain: 'authentication-9e6e9.firebaseapp.com',
+            databaseURL: 'https://authentication-9e6e9.firebaseio.com',
+            storageBucket: 'authentication-9e6e9.appspot.com',
+            messagingSenderId: '166330697411'
+        });
+    }
+
+    
+
+    onButtonPress() {
+        console.log("working");
+        const { email, password } = this.state;
+        //this.setState({ error: 'Authentication Failed'});
+        
+        firebase.auth().signInWithEmailAndPassword(email, password)
+            .catch(() => {
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .catch(() => {
+                        this.setState({ error: 'Authentication Failed'});
+                    })
+            })
     }
 
     navigate(name)
     {
         this.props.navigator.push(
-            {
-                name
-            });
+        {
+            name
+        });
     }
 
     render()
@@ -31,11 +61,49 @@ class Login extends Component
                     <Text style={styles.title}>An educational app for viewing 360 degree videos</Text>
                 </View>
                 <View style={styles.formContainer}>
-                <LoginForm />
+                    <KeyboardAvoidingView behaviour="padding" style={styles.container2}>
+                        <TextInput 
+                            onChangeText={email => this.setState({ email })}
+                            value={ this.state.email }
+                            label='Email'
+                            placeholder="username or email"
+                            placeholderTextColor="rgba(255,255,255,0.5)"
+                            returnKeyType="next"
+                            style={styles.input}
+                            underlineColorAndroid='rgba(0,0,0,0)'
+                            autoCorrect={false}
+                            onSubmitEditing={() => this.passwordInput.focus()} 
+                            keyboardType="email-address"      
+                            autoCapitalize='none'
+                        />
+                        
+                        <TextInput 
+                            //ref='2'
+                            placeholder="password"
+                            value={ this.state.password }
+                            onChangeText={ password => this.setState({ password})}
+                            label='password'
+                            placeholderTextColor="rgba(255,255,255,0.5)"
+                            returnKeyType="go"
+                            secureTextEntry
+                            style={styles.input}
+                            ref={(input) => this.passwordInput = input}
+                        />
+                    </KeyboardAvoidingView>
 
-                <TouchableOpacity style={styles.buttonContainer}>
-                    <Text style={styles.buttonText} onPress={() => this.navigate('homePage')}>LOGIN</Text>
-                </TouchableOpacity>
+                    <Text style={styles.errorTextStyle}>
+                        {this.state.error}
+                    </Text>
+
+                    <TouchableOpacity style={styles.buttonContainer}>
+                        <Text 
+                        style={styles.buttonText} 
+                        onPress={() => this.onButtonPress()}
+                        //onPress={() => this.navigate('homePage')}
+                        >
+                        LOGIN
+                        </Text>
+                    </TouchableOpacity>
                 </View>
 
             </View>
@@ -74,11 +142,28 @@ const styles = StyleSheet.create(
         backgroundColor: '#3498FF',
         paddingVertical: 15
     },
+    container2:
+    {
+        padding: 20
+    },
+    input:
+    {
+        height: 40,
+        backgroundColor: 'rgba(255,255,255,0.2)',
+        marginBottom: 10,
+        color: '#fff',
+        paddingHorizontal: 10        
+    },
     buttonText:
     {
         textAlign: 'center',
         color: '#FFFFFF',
         fontWeight: '700'
+    },
+    errorTextStyle: {
+        fontSize: 20,
+        alignSelf: 'center',
+        color: 'red'
     }
 });
 

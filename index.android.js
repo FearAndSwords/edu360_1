@@ -7,6 +7,7 @@ import Options from './components/Options';
 import Splash from './components/Splash';
 import Login from './components/Login';
 
+
 export default class edu360_1 extends Component
 {
   constructor()
@@ -36,6 +37,10 @@ export default class edu360_1 extends Component
     else if(route.name === 'spacePage')
     {
         return <Space navigator={navigator}/>
+    }
+    else if(route.name === 'optionsPage')
+    {
+        return <Options navigator={navigator}/>
     }
     else if(route.name === 'optionsPage')
     {
