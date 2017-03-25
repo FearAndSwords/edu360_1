@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Image, Text, TouchableOpacity, AppRegistry, KeyboardAvoidingView, TextInput } from 'react-native';
 //import LoginForm from './LoginForm';
 import firebase from 'firebase';
+//import Firebase from 'firebase';
 import Spinner from './Spinner';
 
 class Login extends Component
@@ -9,18 +10,23 @@ class Login extends Component
     constructor()
     {
         super();
-        this.state = { email: '', password: '', error: '', loading: false, loggedIn: false };
+        this.state = { email: '', password: '', error: '', loading: false, loggedIn: null };
         this.navigate = this.navigate.bind(this)
     }    
 
     componentWillMount() {
-        firebase.initializeApp({
-            apiKey: 'AIzaSyAZHP7PREhyxPkHqGUaM3cVp97qNZWXL9c',
-            authDomain: 'authentication-9e6e9.firebaseapp.com',
-            databaseURL: 'https://authentication-9e6e9.firebaseio.com',
-            storageBucket: 'authentication-9e6e9.appspot.com',
-            messagingSenderId: '166330697411'
-        });
+
+        //check to see if there is already a firebase connection/app
+        if(firebase.apps.length === 0) {
+            firebase.initializeApp({
+                apiKey: 'AIzaSyAZHP7PREhyxPkHqGUaM3cVp97qNZWXL9c',
+                authDomain: 'authentication-9e6e9.firebaseapp.com',
+                databaseURL: 'https://authentication-9e6e9.firebaseio.com',
+                storageBucket: 'authentication-9e6e9.appspot.com',
+                messagingSenderId: '166330697411'
+            });
+        }
+        
 
         firebase.auth().onAuthStateChanged((user) => {
             if(user) {

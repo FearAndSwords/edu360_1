@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Text, View, TouchableHighlight } from 'react-native';
 import Header from './Header';
+import firebase from 'firebase';
 
 class Options extends Component
 {
@@ -22,7 +23,11 @@ class Options extends Component
                     <Text style={styles.textStyle}> Home </Text>
                 </TouchableHighlight>
 
-                <TouchableHighlight style={styles.button}>
+                <TouchableHighlight style={styles.button} 
+                onPress={() => firebase.auth().signOut()}
+                onPress={() => firebase.goOffline()}
+                onPress={() => this.props.navigator.push({ name: 'loginPage'})}
+                >
                     <Text style={styles.textStyle}> Log Out </Text>
                 </TouchableHighlight>
             </View>
