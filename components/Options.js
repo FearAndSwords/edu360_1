@@ -25,7 +25,7 @@ class Options extends Component
 
                 <TouchableHighlight style={styles.button} 
                 onPress={() => firebase.auth().signOut()}
-                onPress={() => firebase.goOffline()}
+                //onPress={() => firebase.}
                 onPress={() => this.props.navigator.push({ name: 'loginPage'})}
                 >
                     <Text style={styles.textStyle}> Log Out </Text>
